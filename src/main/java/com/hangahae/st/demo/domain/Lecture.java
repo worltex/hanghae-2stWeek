@@ -10,7 +10,7 @@ import java.time.ZonedDateTime;
 public class Lecture {
     @Id
     @Column(name = "lectureId")
-    private long id;
+    private String id;
 
     @Column(name ="lecture_date")
     private ZonedDateTime lectureDate;
