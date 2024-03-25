@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class LectureService {
 
     private final LectureRepository lectureRepository;
-    private final EnrollmentService enrollmentService;
 
     @Transactional
     public LectureDto getLectureDtoByLectureId(String lectureId) {
@@ -24,17 +23,13 @@ public class LectureService {
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public void updateLectureEnrollment(String lectureId, String userId) {
-        try {
-            Lecture lecture = lectureRepository.findWithLockingById(lectureId);
-            if (lecture.getCurrentEnrollment() + 1 > lecture.getMaxEnrollment()) {
-                throw new RuntimeException("정원 초과");
-            }
-            lecture.updateCurrentEnrollment(lecture.getCurrentEnrollment() + 1);
-            lectureRepository.saveAndFlush(lecture);
-        } catch (Exception e) {
-            throw e;
+    public void updateLectureEnrollment(String lectureId) {
+        Lecture lecture = lectureRepository.findWithLockingById(lectureId);
+        if (lecture.getCurrentEnrollment() + 1 > lecture.getMaxEnrollment()) {
+            throw new RuntimeException("정원 초과");
         }
+        lecture.updateCurrentEnrollment(lecture.getCurrentEnrollment() + 1);
+        lectureRepository.saveAndFlush(lecture);
     }
 
     public Lecture getLectureById(String lectureId) {

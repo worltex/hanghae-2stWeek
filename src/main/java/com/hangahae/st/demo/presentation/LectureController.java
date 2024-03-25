@@ -22,6 +22,7 @@ public class LectureController {
     @PostMapping
     @Retryable(
             value = {CannotAcquireLockException.class},
+            maxAttempts = 5,
             backoff = @Backoff(delay = 1000)
     )
     public void applyLecture(@PathVariable String lectureId, @RequestBody ApplyLectureRequest request) {
@@ -30,18 +31,18 @@ public class LectureController {
         String userId = request.getUserId();
         LectureDto lectureDto = lectureService.getLectureDtoByLectureId(lectureId);
         if (lectureDto.getMaxEnrollment() <= lectureDto.getCurrentEnrollment()) {
-            throw new RuntimeException("정원 초과");
+            throw new RuntimeException("정원 초과되었습니다.");
         }
         //2. 동일한 신청자의 중복 요청이 있는지 확인
         //2.1 동일한 요청이 있는 경우 에러 처리
         //2.2 없는 경우 Lecture Registration 테이블에 status REGISTERING
         enrollmentService.saveEnrollmentStatus(lectureId, request.getUserId(), RegistrationStatus.REGISTERING);
 
-        //3. current_enrollemnt+1 > total_enrollment인지 확인 LOCK 30초 정도
-        //3.1 큰 경우 Lecture Registration row 삭제 처리 => 에러 처리
+        //3. current_enrollemnt+1 > total_enrollment인지 확인
+        //3.1 큰 경우 RESTRATION STATUS row FAILED 처리 => 재시도 처리
         //3.2 작은 경우 COMPLETED 처리 및 current_enrollment +1 처리
         try {
-            lectureService.updateLectureEnrollment(lectureId, userId);
+            lectureService.updateLectureEnrollment(lectureId);
         } catch (Exception e) {
             enrollmentService.updateEnrollmentStatus(lectureId, userId, RegistrationStatus.FAILED);
             throw e;
@@ -52,6 +53,7 @@ public class LectureController {
     @Recover
     public void deleteEnrollment(CannotAcquireLockException e, String lectureId, ApplyLectureRequest request) {
         enrollmentService.deleteEnrollment(lectureId, request.getUserId());
+        throw new RuntimeException("특강 신청 실패하였습니다. 재시도 부탁드립니다.");
     }
 
     @GetMapping
