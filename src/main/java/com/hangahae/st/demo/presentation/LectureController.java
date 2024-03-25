@@ -40,7 +40,12 @@ public class LectureController {
         //3. current_enrollemnt+1 > total_enrollment인지 확인 LOCK 30초 정도
         //3.1 큰 경우 Lecture Registration row 삭제 처리 => 에러 처리
         //3.2 작은 경우 COMPLETED 처리 및 current_enrollment +1 처리
-        lectureService.updateLectureEnrollment(lectureId, userId);
+        try {
+            lectureService.updateLectureEnrollment(lectureId, userId);
+        } catch (Exception e) {
+            enrollmentService.updateEnrollmentStatus(lectureId, userId, RegistrationStatus.FAILED);
+            throw e;
+        }
         enrollmentService.updateEnrollmentStatus(lectureId, userId, RegistrationStatus.REGISTERED);
     }
 

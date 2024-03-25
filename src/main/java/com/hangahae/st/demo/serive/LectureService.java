@@ -1,7 +1,6 @@
 package com.hangahae.st.demo.serive;
 
 import com.hangahae.st.demo.domain.Lecture;
-import com.hangahae.st.demo.domain.RegistrationStatus;
 import com.hangahae.st.demo.dto.LectureDto;
 import com.hangahae.st.demo.repository.LectureRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +33,6 @@ public class LectureService {
             lecture.updateCurrentEnrollment(lecture.getCurrentEnrollment() + 1);
             lectureRepository.saveAndFlush(lecture);
         } catch (Exception e) {
-            enrollmentService.updateEnrollmentStatus(lectureId, userId, RegistrationStatus.FAILED);
             throw e;
         }
     }
