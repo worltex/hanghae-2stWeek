@@ -13,6 +13,8 @@ import java.util.Optional;
 
 public interface EnrollmentRepository extends JpaRepository<Enrollment, EnrollmentId> {
 
+    boolean existsByIdLectureIdAndIdUserId(String lectureId, String userId);
+
     Optional<Enrollment> findByIdLectureIdAndIdUserId(String lectureId, String userId);
 
     List<Enrollment> findByIdLectureIdAndIdUserIdAndRegistrationStatusIn(String lectureId, String userId, List<RegistrationStatus> status);

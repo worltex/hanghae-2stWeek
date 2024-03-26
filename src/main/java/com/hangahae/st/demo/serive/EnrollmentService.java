@@ -21,7 +21,7 @@ public class EnrollmentService {
 
     @Transactional(readOnly = true)
     public boolean existEnrollmentByLectureIdAndUserId(String lectureId, String userId) {
-        return enrollmentRepository.findByIdLectureIdAndIdUserId(lectureId, userId).isPresent();
+        return enrollmentRepository.existsByIdLectureIdAndIdUserId(lectureId, userId);
     }
 
     @Transactional
