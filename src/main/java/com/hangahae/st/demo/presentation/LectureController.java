@@ -5,10 +5,6 @@ import com.hangahae.st.demo.dto.LectureDto;
 import com.hangahae.st.demo.serive.EnrollmentService;
 import com.hangahae.st.demo.serive.LectureService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.CannotAcquireLockException;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Recover;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,11 +16,6 @@ public class LectureController {
     private final LectureService lectureService;
 
     @PostMapping
-    @Retryable(
-            value = {CannotAcquireLockException.class},
-            maxAttempts = 5,
-            backoff = @Backoff(delay = 1000)
-    )
     public void applyLecture(@PathVariable String lectureId, @RequestBody ApplyLectureRequest request) {
         //1. Lecture 조회 (total_enrollment, current_enrollment)
         //1.2 current_enrollment>total_enrollment 넘는 경우 에러 처리
@@ -48,12 +39,6 @@ public class LectureController {
             throw e;
         }
         enrollmentService.updateEnrollmentStatus(lectureId, userId, RegistrationStatus.REGISTERED);
-    }
-
-    @Recover
-    public void deleteEnrollment(CannotAcquireLockException e, String lectureId, ApplyLectureRequest request) {
-        enrollmentService.deleteEnrollment(lectureId, request.getUserId());
-        throw new RuntimeException("특강 신청 실패하였습니다. 재시도 부탁드립니다.");
     }
 
     @GetMapping
