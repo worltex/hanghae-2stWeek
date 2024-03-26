@@ -13,4 +13,5 @@ create table enrollment (
             primary key (lecture_id, user_id)
 );
 
-insert into lecture values(0,1,'2024-03-25 13:46:07.802371+09',1);
+INSERT INTO lecture(lecture_id, current_enrollment, lecture_date, max_enrollment)
+VALUES ('1', 0, '2024-03-25 13:46:07.802371+09', 1);
