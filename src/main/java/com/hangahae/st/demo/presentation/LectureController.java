@@ -1,5 +1,6 @@
 package com.hangahae.st.demo.presentation;
 
+import com.hangahae.st.demo.domain.Lecture;
 import com.hangahae.st.demo.domain.RegistrationStatus;
 import com.hangahae.st.demo.dto.LectureDto;
 import com.hangahae.st.demo.presentation.request.ApplyLectureRequest;
@@ -19,8 +20,8 @@ public class LectureController {
     private final LectureService lectureService;
 
     @PostMapping
-    public void createLecture(@RequestBody CreateLectureRequest request) {
-        lectureService.createLecture(request.getMaxEnrollment(), request.getCurrentEnrollment());
+    public Lecture createLecture(@RequestBody CreateLectureRequest request) {
+        return lectureService.createLecture(request.getMaxEnrollment(), request.getCurrentEnrollment());
     }
 
     @PostMapping("/{lectureId}")

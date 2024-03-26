@@ -37,7 +37,8 @@ public class LectureService {
         return lectureRepository.findById(lectureId).orElseThrow(() -> new RuntimeException("강의 정보가 없습니다."));
     }
 
-    public void createLecture(int maxEnrollment, int currentEnrollment) {
-        lectureRepository.save(new Lecture(Integer.toString(RandomUtil.getPositiveInt()), ZonedDateTime.now(), maxEnrollment, currentEnrollment));
+    public Lecture createLecture(int maxEnrollment, int currentEnrollment) {
+        return lectureRepository.save(new Lecture(Integer.toString(RandomUtil.getPositiveInt()), ZonedDateTime.now(), maxEnrollment, currentEnrollment));
     }
+
 }
