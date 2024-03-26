@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -26,8 +25,8 @@ public class EnrollmentService {
 
     @Transactional
     public void saveEnrollmentStatus(String lectureId, String userId, RegistrationStatus status) {
-        List<Enrollment> enrollmentList = enrollmentRepository.findByIdLectureIdAndIdUserIdAndRegistrationStatusIn(lectureId, userId, List.of(RegistrationStatus.REGISTERED, RegistrationStatus.REGISTERING));
-        if (!CollectionUtils.isEmpty(enrollmentList)) {
+        boolean isExist = enrollmentRepository.existsByIdLectureIdAndIdUserIdAndRegistrationStatusIn(lectureId, userId, List.of(RegistrationStatus.REGISTERED, RegistrationStatus.REGISTERING));
+        if (isExist) {
             throw new RuntimeException("동일한 요청이 이미 진행중입니다.");
         }
         enrollmentRepository.save(new Enrollment(new EnrollmentId(userId, lectureId), status));
