@@ -1,5 +1,6 @@
 package com.hangahae.st.demo.serive;
 
+import ch.qos.logback.core.testUtil.RandomUtil;
 import com.hangahae.st.demo.domain.Lecture;
 import com.hangahae.st.demo.dto.LectureDto;
 import com.hangahae.st.demo.repository.LectureRepository;
@@ -7,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.ZonedDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -34,4 +37,7 @@ public class LectureService {
         return lectureRepository.findById(lectureId).orElseThrow(() -> new RuntimeException("강의 정보가 없습니다."));
     }
 
+    public void createLecture(int maxEnrollment, int currentEnrollment) {
+        lectureRepository.save(new Lecture(Integer.toString(RandomUtil.getPositiveInt()), ZonedDateTime.now(), maxEnrollment, currentEnrollment));
+    }
 }

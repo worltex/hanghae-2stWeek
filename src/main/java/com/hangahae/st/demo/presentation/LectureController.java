@@ -2,6 +2,9 @@ package com.hangahae.st.demo.presentation;
 
 import com.hangahae.st.demo.domain.RegistrationStatus;
 import com.hangahae.st.demo.dto.LectureDto;
+import com.hangahae.st.demo.presentation.request.ApplyLectureRequest;
+import com.hangahae.st.demo.presentation.request.CreateLectureRequest;
+import com.hangahae.st.demo.presentation.response.ApplyLectureResponse;
 import com.hangahae.st.demo.serive.EnrollmentService;
 import com.hangahae.st.demo.serive.LectureService;
 import lombok.RequiredArgsConstructor;
@@ -9,13 +12,18 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/lecture/{lectureId}")
+@RequestMapping("/lecture")
 public class LectureController {
 
     private final EnrollmentService enrollmentService;
     private final LectureService lectureService;
 
     @PostMapping
+    public void createLecture(@RequestBody CreateLectureRequest request) {
+        lectureService.createLecture(request.getMaxEnrollment(), request.getCurrentEnrollment());
+    }
+
+    @PostMapping("/{lectureId}")
     public void applyLecture(@PathVariable String lectureId, @RequestBody ApplyLectureRequest request) {
         //1. Lecture 조회 (total_enrollment, current_enrollment)
         //1.2 current_enrollment>total_enrollment 넘는 경우 에러 처리
@@ -41,7 +49,7 @@ public class LectureController {
         enrollmentService.updateEnrollmentStatus(lectureId, userId, RegistrationStatus.REGISTERED);
     }
 
-    @GetMapping
+    @GetMapping("/{lectureId}")
     public ApplyLectureResponse getLectureRegistrationResult(@PathVariable String lectureId, @RequestParam String userId) {
         boolean registerResult = enrollmentService.existEnrollmentByLectureIdAndUserId(lectureId, userId);
         return new ApplyLectureResponse(lectureId, userId, registerResult);
