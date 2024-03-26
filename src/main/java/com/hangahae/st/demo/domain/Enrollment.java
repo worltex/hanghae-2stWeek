@@ -2,11 +2,13 @@ package com.hangahae.st.demo.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class Enrollment {
 
     @EmbeddedId
