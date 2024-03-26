@@ -1,4 +1,4 @@
-package com.hangahae.st.demo.presentation;
+package com.hangahae.st.demo.presentation.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
