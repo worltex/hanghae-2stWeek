@@ -1,1 +1,0 @@
-insert into lecture values(0,1,'2024-03-25 13:46:07.802371+09',1);

@@ -24,7 +24,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: create        # DB 초기화 전략 (none, create, create-drop, update, validate)
+      ddl-auto: none    # DB 초기화 전략 (none, create, create-drop, update, validate)
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
@@ -32,10 +32,8 @@ spring:
         show_sql: true        # 쿼리 로그 출력
       open-in-view: false
       database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
 
   sql:
     init:
       mode: always
-      continue-on-error: true
-      data-location: file:src/main/resources/test_sql/init.sql
-
