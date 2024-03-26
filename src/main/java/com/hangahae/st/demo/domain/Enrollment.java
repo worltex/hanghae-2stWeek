@@ -14,6 +14,11 @@ public class Enrollment {
     @EmbeddedId
     private EnrollmentId id;
 
+    @ManyToOne
+    @MapsId("lectureId")
+    @JoinColumn(name = "lecture_id")
+    private Lecture lecture;
+
 
     @Column(name = "registration_status")
     @Enumerated(EnumType.STRING)

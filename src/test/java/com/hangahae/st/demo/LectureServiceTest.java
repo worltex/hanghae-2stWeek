@@ -1,7 +1,6 @@
 package com.hangahae.st.demo;
 
 import com.hangahae.st.demo.domain.Lecture;
-import com.hangahae.st.demo.dto.LectureDto;
 import com.hangahae.st.demo.repository.LectureRepository;
 import com.hangahae.st.demo.serive.LectureService;
 import org.junit.jupiter.api.Test;
@@ -38,7 +37,7 @@ public class LectureServiceTest {
         when(lectureRepository.findById(any())).thenReturn(Optional.of(lecture));
 
         //when
-        LectureDto result = lectureService.getLectureDtoByLectureId(lectureId);
+        Lecture result = lectureService.getLectureDtoByLectureId(lectureId);
 
         //then
         assertThat(result.getMaxEnrollment()).isEqualTo(MAX_ENROLLMENT);

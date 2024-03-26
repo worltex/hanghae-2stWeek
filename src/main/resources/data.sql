@@ -1,16 +1,17 @@
-create table lecture (
-        lecture_id varchar(255) not null,
-        current_enrollment integer,
-        lecture_date timestamp(6) with time zone,
-        max_enrollment integer,
-        primary key (lecture_id)
+CREATE TABLE Lecture (
+    lecture_id VARCHAR(255) NOT NULL,
+    current_enrollment INTEGER,
+    lecture_date TIMESTAMP(6) WITH TIME ZONE,
+    max_enrollment INTEGER,
+    PRIMARY KEY (lecture_id)
 );
 
-create table enrollment (
-            lecture_id varchar(255) not null,
-            user_id varchar(255) not null,
-            registration_status varchar(255) check (registration_status in ('REGISTERING','REGISTERED','FAILED')),
-            primary key (lecture_id, user_id)
+CREATE TABLE Enrollment (
+    user_id VARCHAR(255) NOT NULL,
+    lecture_id VARCHAR(255) NOT NULL,
+    registration_status VARCHAR(255) CHECK (registration_status IN ('REGISTERING', 'REGISTERED', 'FAILED')),
+    PRIMARY KEY (lecture_id, user_id),
+    FOREIGN KEY (lecture_id) REFERENCES Lecture(lecture_id)
 );
 
 INSERT INTO lecture(lecture_id, current_enrollment, lecture_date, max_enrollment)
