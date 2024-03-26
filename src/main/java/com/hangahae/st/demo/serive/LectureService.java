@@ -15,7 +15,7 @@ public class LectureService {
 
     private final LectureRepository lectureRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public LectureDto getLectureDtoByLectureId(String lectureId) {
         Lecture lecture = getLectureById(lectureId);
         return new LectureDto(lecture.getMaxEnrollment(), lecture.getCurrentEnrollment());
@@ -23,7 +23,7 @@ public class LectureService {
     
     @Transactional
     public void updateLectureEnrollment(String lectureId) {
-        Lecture lecture = lectureRepository.findWithLockingById(lectureId);
+        Lecture lecture = lectureRepository.findWithLockingById(lectureId).orElseThrow(() -> new RuntimeException("강의 정보가 없습니다."));
         if (lecture.getCurrentEnrollment() + 1 > lecture.getMaxEnrollment()) {
             throw new RuntimeException("정원 초과");
         }

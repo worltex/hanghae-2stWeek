@@ -7,9 +7,11 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface LectureRepository extends JpaRepository<Lecture, String> {
 
     @Lock(value = LockModeType.PESSIMISTIC_WRITE)
     @Query("select l from Lecture l where l.id = :id")
-    Lecture findWithLockingById(@Param(value = "id") String id);
+    Optional<Lecture> findWithLockingById(@Param(value = "id") String id);
 }
