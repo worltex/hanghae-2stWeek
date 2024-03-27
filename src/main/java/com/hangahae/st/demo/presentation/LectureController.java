@@ -2,13 +2,17 @@ package com.hangahae.st.demo.presentation;
 
 import com.hangahae.st.demo.domain.Lecture;
 import com.hangahae.st.demo.domain.RegistrationStatus;
+import com.hangahae.st.demo.dto.LectureDto;
 import com.hangahae.st.demo.presentation.request.ApplyLectureRequest;
 import com.hangahae.st.demo.presentation.request.CreateLectureRequest;
+import com.hangahae.st.demo.presentation.request.SearchLectureRequest;
 import com.hangahae.st.demo.presentation.response.ApplyLectureResponse;
 import com.hangahae.st.demo.serive.EnrollmentService;
 import com.hangahae.st.demo.serive.LectureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -53,6 +57,11 @@ public class LectureController {
     public ApplyLectureResponse getLectureRegistrationResult(@PathVariable String lectureId, @RequestParam String userId) {
         boolean registerResult = enrollmentService.existEnrollmentByLectureIdAndUserId(lectureId, userId);
         return new ApplyLectureResponse(lectureId, userId, registerResult);
+    }
+
+    @GetMapping
+    public List<LectureDto> getLectureList(SearchLectureRequest request) {
+        return lectureService.getLectureList(request.getLectureDate());
     }
 
 }

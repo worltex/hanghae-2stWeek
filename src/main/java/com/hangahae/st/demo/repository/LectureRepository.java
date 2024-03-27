@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public interface LectureRepository extends JpaRepository<Lecture, String> {
@@ -14,4 +16,6 @@ public interface LectureRepository extends JpaRepository<Lecture, String> {
     @Lock(value = LockModeType.PESSIMISTIC_WRITE)
     @Query("select l from Lecture l where l.id = :id")
     Optional<Lecture> findWithLockingById(@Param(value = "id") String id);
+
+    List<Lecture> findAllByLectureDate(ZonedDateTime lectureDate);
 }
