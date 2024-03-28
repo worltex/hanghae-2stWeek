@@ -1,4 +1,4 @@
-package com.hangahae.st.demo.presentation.request;
+package com.hangahae.st.demo.controller.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

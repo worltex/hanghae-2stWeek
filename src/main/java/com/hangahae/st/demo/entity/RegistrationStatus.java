@@ -1,4 +1,4 @@
-package com.hangahae.st.demo.domain;
+package com.hangahae.st.demo.entity;
 
 public enum RegistrationStatus {
 

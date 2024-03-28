@@ -1,8 +1,8 @@
 package com.hangahae.st.demo.serive;
 
 import ch.qos.logback.core.testUtil.RandomUtil;
-import com.hangahae.st.demo.domain.Lecture;
 import com.hangahae.st.demo.dto.LectureDto;
+import com.hangahae.st.demo.entity.Lecture;
 import com.hangahae.st.demo.repository.LectureRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,19 +17,15 @@ import java.util.List;
 @Slf4j
 public class LectureService {
 
+    private final LectureValidator lectureValidator;
     private final LectureRepository lectureRepository;
 
-    @Transactional(readOnly = true)
-    public Lecture getLectureDtoByLectureId(String lectureId) {
-        return lectureRepository.findById(lectureId).orElseThrow(() -> new RuntimeException("강의 정보가 없습니다."));
-    }
-    
     @Transactional
-    public void updateLectureEnrollment(String lectureId) {
+    public void applyLecture(String lectureId) {
         Lecture lecture = lectureRepository.findWithLockingById(lectureId).orElseThrow(() -> new RuntimeException("강의 정보가 없습니다."));
-        if (lecture.getCurrentEnrollment() + 1 > lecture.getMaxEnrollment()) {
-            throw new RuntimeException("정원 초과");
-        }
+
+        lectureValidator.validateRegister(lecture);
+
         lecture.updateCurrentEnrollment(lecture.getCurrentEnrollment() + 1);
     }
 

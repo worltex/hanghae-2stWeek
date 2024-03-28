@@ -1,8 +1,8 @@
 package com.hangahae.st.demo;
 
-import com.hangahae.st.demo.presentation.LectureController;
-import com.hangahae.st.demo.presentation.request.ApplyLectureRequest;
-import com.hangahae.st.demo.presentation.request.CreateLectureRequest;
+import com.hangahae.st.demo.controller.LectureController;
+import com.hangahae.st.demo.controller.request.ApplyLectureRequest;
+import com.hangahae.st.demo.controller.request.CreateLectureRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

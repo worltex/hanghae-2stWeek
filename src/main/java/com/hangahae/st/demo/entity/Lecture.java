@@ -1,4 +1,4 @@
-package com.hangahae.st.demo.domain;
+package com.hangahae.st.demo.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
